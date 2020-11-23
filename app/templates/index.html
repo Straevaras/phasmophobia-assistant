@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<!-- Open source libraries //-->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+		
+		<!-- Project specific includes //-->
+		<script type="text/javascript" src="{{ url_for('static', filename='js/phasmophobia.js') }}"></script>
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/phasmophobia.css') }}" />
+		
+		<!-- Favicons //-->
+		<link rrel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}" />
+		<link rel="apple-touch-icon" href="{{ url_for('static', filename='img/apple-touch-icon.png') }}" />
+		<link rel="apple-touch-icon-precomposed" href="{{ url_for('static', filename='img/apple-touch-icon.png') }}" />
+	</head>
+	<body>
+		<h2 class="ml-2 mt-2">Phasmophobia Assistant</h2>
+		<div id="lunchbox" class="row">
+			<div id="form_left" class="col">
+				<div id="form_main" class="row ml-1">
+					<div class="col form-group px-3 pt-2">
+						<h6 class="text-center">Job Information & Objectives</h6>
+						<div class="row">
+							<div class="col-3 pr-0"><label for="ghostname">Location</label></div>
+							<div class="col-9 p-0 input-group input-group-sm">
+								<select id="main_location" class="form-control text-light bg-dark" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+								<option disabled selected value style="display:none"> --- </option>
+								</select>
+							</div>
+						</div>
+						<div class="row mb-2">
+							<div class="col-3 pr-0"><label for="ghostname">Difficulty</label></div>
+							<div class="col-9 p-0 input-group input-group-sm">
+								<select id="main_difficulty" class="form-control text-light bg-dark" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+								<option disabled selected value style="display:none"> --- </option>
+								</select>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-3 pr-0"><label for="ghostname">Ghost Name</label></div>
+							<div class="col-9 p-0 input-group input-group-sm">
+								<select id="main_name_first" class="form-control text-light bg-dark" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+								<option disabled selected value style="display:none"> - first - </option>
+								</select>
+								<select id="main_name_last" class="form-control text-light bg-dark ml-1" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+								<option disabled selected value style="display:none"> - last - </option>
+								</select>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-3 pr-0"><label for="ghostname">Responds to</label></div>
+							<div class="col-9 p-0 input-group input-group-sm">
+								<select id="main_responds" class="form-control text-light bg-dark" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+								<option disabled selected value style="display:none"> --- </option>
+								<option>Alone</option>
+								<option>Everyone</option>
+								</select>
+							</div>
+						</div>
+						<div class="row mb-2">
+							<div class="col-3 pr-0"><label for="ghostname">Report Data</label></div>
+							<div class="col-9 p-0 input-group input-group-sm">
+								<select id="main_report" class="form-control text-light bg-dark" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+									<option disabled selected value style="display:none"> --- </option>
+								</select>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-3 pr-0">Objective 1</div>
+							<div class="col-9 p-0 input-group input-group-sm">
+								<select id="objective_1" class="form-control text-light bg-dark" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+									<option disabled selected value style="display:none"> --- </option>
+								</select>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-3 pr-0">Objective 2</div>
+							<div class="col-9 p-0 input-group input-group-sm">
+								<select id="objective_2" class="form-control text-light bg-dark" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+									<option disabled selected value style="display:none"> --- </option>
+								</select>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-3 pr-0">Objective 3</div>
+							<div class="col-9 p-0 input-group input-group-sm">
+								<select id="objective_3" class="form-control text-light bg-dark" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+									<option disabled selected value style="display:none"> --- </option>
+								</select>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-3 pr-0">Objective 4</div>
+							<div class="col-9 p-0 input-group input-group-sm">
+								<select id="objective_4" class="form-control text-light bg-dark" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+									<option disabled selected value style="display:none"> --- </option>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="form_evidence" class="row">
+					<div class="col-7 form-group px-3 ml-4">
+						<h6 class="text-center">Evidence</h6>
+						<div class="row ml-1 mb-1">
+							<div class="p-0 mr-1">
+								<button id="evidence_emf_ruleout" class="evidence-btn btn btn-danger btn-sm mr-1"><i class="fas fa-times-circle"></i></button>
+							</div>
+							<div class="p-0 mr-1">
+								<button id="evidence_emf_observe" class="evidence-btn btn btn-success btn-sm mr-1"><i class="fas fa-check-circle"></i></button>
+							</div>
+							<div class="col p-0 ml-2">
+								<span id="evidence_emf_display" class="btn btn-light btn-sm btn-block">EMF Level 5</span>
+							</div>
+						</div>
+						<div class="row ml-1 mb-1">
+							<div class="p-0 mr-1">
+								<button id="evidence_fingerprints_ruleout" class="evidence-btn btn btn-danger btn-sm mr-1"><i class="fas fa-times-circle"></i></button>
+							</div>
+							<div class="p-0 mr-1">
+								<button id="evidence_fingerprints_observe" class="evidence-btn btn btn-success btn-sm mr-1"><i class="fas fa-check-circle"></i></button>
+							</div>
+							<div class="col p-0 ml-2">
+								<span id="evidence_fingerprints_display" class="btn btn-light btn-sm btn-block">Fingerprints</span>
+							</div>
+						</div>
+						<div class="row ml-1 mb-1">
+							<div class="p-0 mr-1">
+								<button id="evidence_freezing_ruleout" class="evidence-btn btn btn-danger btn-sm mr-1"><i class="fas fa-times-circle"></i></button>
+							</div>
+							<div class="p-0 mr-1">
+								<button id="evidence_freezing_observe" class="evidence-btn btn btn-success btn-sm mr-1"><i class="fas fa-check-circle"></i></button>
+							</div>
+							<div class="col p-0 ml-2">
+								<span id="evidence_freezing_display" class="btn btn-light btn-sm btn-block">Freezing Temperatures</span>
+							</div>
+						</div>
+						<div class="row ml-1 mb-1">
+							<div class="p-0 mr-1">
+								<button id="evidence_orb_ruleout" class="evidence-btn btn btn-danger btn-sm mr-1"><i class="fas fa-times-circle"></i></button>
+							</div>
+							<div class="p-0 mr-1">
+								<button id="evidence_orb_observe" class="evidence-btn btn btn-success btn-sm mr-1"><i class="fas fa-check-circle"></i></button>
+							</div>
+							<div class="col p-0 ml-2">
+								<span id="evidence_orb_display" class="btn btn-light btn-sm btn-block">Ghost Orb</span>
+							</div>
+						</div>
+						<div class="row ml-1 mb-1">
+							<div class="p-0 mr-1">
+								<button id="evidence_writing_ruleout" class="evidence-btn btn btn-danger btn-sm mr-1"><i class="fas fa-times-circle"></i></button>
+							</div>
+							<div class="p-0 mr-1">
+								<button id="evidence_writing_observe" class="evidence-btn btn btn-success btn-sm mr-1"><i class="fas fa-check-circle"></i></button>
+							</div>
+							<div class="col p-0 ml-2">
+								<span id="evidence_writing_display" class="btn btn-light btn-sm btn-block">Ghost Writing</span>
+							</div>
+						</div>
+						<div class="row ml-1 mb-1">
+							<div class="p-0 mr-1">
+								<button id="evidence_box_ruleout" class="evidence-btn btn btn-danger btn-sm mr-1"><i class="fas fa-times-circle"></i></button>
+							</div>
+							<div class="p-0 mr-1">
+								<button id="evidence_box_observe" class="evidence-btn btn btn-success btn-sm mr-1"><i class="fas fa-check-circle"></i></button>
+							</div>
+							<div class="col p-0 ml-2">
+								<span id="evidence_box_display" class="btn btn-light btn-sm btn-block">Spirit Box</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-4 ml-3">
+						<h6 class="text-center">Possible Ghosts</h6>
+						<span id="ghost_banshee" class="btn btn-sm btn-light btn-block p-0 mt-1">Banshee</span>
+						<span id="ghost_demon" class="btn btn-sm btn-light btn-block p-0 mt-1">Demon</span>
+						<span id="ghost_jinn" class="btn btn-sm btn-light btn-block p-0 mt-1">Jinn</span>
+						<span id="ghost_mare" class="btn btn-sm btn-light btn-block p-0 mt-1">Mare</span>
+						<span id="ghost_oni" class="btn btn-sm btn-light btn-block p-0 mt-1">Oni</span>
+						<span id="ghost_phantom" class="btn btn-sm btn-light btn-block p-0 mt-1">Phantom</span>
+						<span id="ghost_poltergeist" class="btn btn-sm btn-light btn-block p-0 mt-1">Poltergeist</span>
+						<span id="ghost_revenant" class="btn btn-sm btn-light btn-block p-0 mt-1">Revenant</span>
+						<span id="ghost_shade" class="btn btn-sm btn-light btn-block p-0 mt-1">Shade</span>
+						<span id="ghost_spirit" class="btn btn-sm btn-light btn-block p-0 mt-1">Spirit</span>
+						<span id="ghost_wraith" class="btn btn-sm btn-light btn-block p-0 mt-1">Wraith</span>
+						<span id="ghost_yurei" class="btn btn-sm btn-light btn-block p-0 mt-1">Yurei</span>
+					</div>
+				</div>
+			</div>
+			<div id="form_right" class="col form-group">
+				<h6 class="text-center">Characteristics</h6>
+				<div class="row">
+					<div class="col-6 pr-0"><label for="ghostname">Roaming</label></div>
+					<div class="col-6 p-0 input-group input-group-sm">
+						<select id="char_roaming" class="form-control text-light bg-dark" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+						<option disabled selected value style="display:none"> --- </option>
+						<option>No</option>
+						<option>Yes</option>
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-6 pr-0"><label for="ghostname">Sound Sensor</label></div>
+					<div class="col-6 p-0 input-group input-group-sm">
+						<select id="char_sound" class="form-control text-light bg-dark" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+						<option disabled selected value style="display:none"> --- </option>
+						<option>N/A</option>
+						<option>No</option>
+						<option>Yes</option>
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-6 pr-0"><label for="ghostname">Lights On</label></div>
+					<div class="col-6 p-0 input-group input-group-sm">
+						<select id="char_lights_on" class="form-control text-light bg-dark" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+						<option disabled selected value style="display:none"> --- </option>
+						<option>No</option>
+						<option>Yes</option>
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-6 pr-0"><label for="ghostname">Lights Off</label></div>
+					<div class="col-6 p-0 input-group input-group-sm">
+						<select id="char_lights_off" class="form-control text-light bg-dark" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+						<option disabled selected value style="display:none"> --- </option>
+						<option>No</option>
+						<option>Yes</option>
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-6 pr-0"><label for="ghostname">Lights Flicker</label></div>
+					<div class="col-6 p-0 input-group input-group-sm">
+						<select id="char_lights_flicker" class="form-control text-light bg-dark" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+						<option disabled selected value style="display:none"> --- </option>
+						<option>No</option>
+						<option>Yes</option>
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-6 pr-0"><label for="ghostname">Breaker Off</label></div>
+					<div class="col-6 p-0 input-group input-group-sm">
+						<select id="char_breaker_off" class="form-control text-light bg-dark" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+						<option disabled selected value style="display:none"> --- </option>
+						<option>No</option>
+						<option>Yes</option>
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-6 pr-0"><label for="ghostname">Breaker On</label></div>
+					<div class="col-6 p-0 input-group input-group-sm">
+						<select id="char_breaker_on" class="form-control text-light bg-dark" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+						<option disabled selected value style="display:none"> --- </option>
+						<option>No</option>
+						<option>Yes</option>
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-6 pr-0"><label for="ghostname">Shrill</label></div>
+					<div class="col-6 p-0 input-group input-group-sm">
+						<select id="char_shrill" class="form-control text-light bg-dark" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+						<option disabled selected value style="display:none"> --- </option>
+						<option>No</option>
+						<option>Yes</option>
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-6 pr-0"><label for="ghostname">Mimic</label></div>
+					<div class="col-6 p-0 input-group input-group-sm">
+						<select id="char_mimic" class="form-control text-light bg-dark" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+						<option disabled selected value style="display:none"> --- </option>
+						<option>No</option>
+						<option>Yes</option>
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-6 pr-0"><label for="ghostname">Ouija</label></div>
+					<div class="col-6 p-0 input-group input-group-sm">
+						<select id="char_ouija" class="form-control text-light bg-dark" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+						<option disabled selected value style="display:none"> --- </option>
+						<option>N/A</option>
+						<option>No</option>
+						<option>Yes</option>
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-6 pr-0"><label for="ghostname">Items</label></div>
+					<div class="col-6 p-0 input-group input-group-sm">
+						<select id="char_items" class="form-control text-light bg-dark" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+						<option disabled selected value style="display:none"> --- </option>
+						<option>N/A</option>
+						<option>No</option>
+						<option>Yes</option>
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-6 pr-0"><label for="ghostname">Phone</label></div>
+					<div class="col-6 p-0 input-group input-group-sm">
+						<select id="char_phone" class="form-control text-light bg-dark" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+						<option disabled selected value style="display:none"> --- </option>
+						<option>N/A</option>
+						<option>No</option>
+						<option>Yes</option>
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-6 pr-0"><label for="ghostname">TV</label></div>
+					<div class="col-6 p-0 input-group input-group-sm">
+						<select id="char_tv" class="form-control text-light bg-dark" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+						<option disabled selected value style="display:none"> --- </option>
+						<option>N/A</option>
+						<option>No</option>
+						<option>Yes</option>
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-6 pr-0"><label for="ghostname">Radio</label></div>
+					<div class="col-6 p-0 input-group input-group-sm">
+						<select id="char_radio" class="form-control text-light bg-dark" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+						<option disabled selected value style="display:none"> --- </option>
+						<option>N/A</option>
+						<option>No</option>
+						<option>Yes</option>
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-6 pr-0"><label for="ghostname">Car</label></div>
+					<div class="col-6 p-0 input-group input-group-sm">
+						<select id="char_car" class="form-control text-light bg-dark" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+						<option disabled selected value style="display:none"> --- </option>
+						<option>N/A</option>
+						<option>No</option>
+						<option>Yes</option>
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-6 pr-0"><label for="ghostname">Piano</label></div>
+					<div class="col-6 p-0 input-group input-group-sm">
+						<select id="char_piano" class="form-control text-light bg-dark" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+						<option disabled selected value style="display:none"> --- </option>
+						<option>N/A</option>
+						<option>No</option>
+						<option>Yes</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="form_buttons" class="row mt-3 ml-3">
+			<button id="control_report" class="btn btn-primary mr-1"><i class="far fa-file-alt"></i> Submit Report</button>
+			<button id="control_reset" class="btn btn-warning mr-1"><i class="fas fa-sync-alt"></i> Reset</button>
+		</div>
+	</body>
+</html>

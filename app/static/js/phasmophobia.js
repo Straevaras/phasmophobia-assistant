@@ -18,6 +18,70 @@ const EVIDENCE_ORB = "Ghost Orb"
 const EVIDENCE_WRITING = "Ghost Writing"
 const EVIDENCE_BOX = "Spirit Box"
 
+const LOCATIONS = [
+	"Tanglewood Streethouse",
+	"Edgefield Street House",
+	"Ridgeview Road House",
+	"Grafton Farmhouse",
+	"Bleadsdale Farmhouse",
+	"Brownstone High School",
+	"Asylum"
+]
+
+const DIFFICULTIES = [
+	"Amateur",
+	"Intermediate",
+	"Professional"
+]
+
+const NAMES_FIRST = [
+	"Barbara",
+	"Carol",
+	"Christopher",
+	"Daniel",
+	"David",
+	"Donald",
+	"Donna",
+	"Dorothy",
+	"George",
+	"Helen",
+	"James",
+	"John",
+	"Kenneth",
+	"Linda",
+	"Lisa",
+	"Michael",
+	"Patricia",
+	"Paul",
+	"Robert",
+	"Ruth",
+	"Sandra",
+	"Susan",
+	"Thomas",
+	"William"
+]
+
+const NAMES_LAST = [
+	"Anderson",
+	"Brown",
+	"Clark",
+	"Davis",
+	"Harris",
+	"Jackson",
+	"Johnson",
+	"Jones",
+	"Martinez",
+	"Miller",
+	"Moore",
+	"Robinson",
+	"Taylor",
+	"Thomas",
+	"Thompson",
+	"White",
+	"Williams",
+	"Wilson",
+]
+
 const OBJECTIVE_MAIN = "Discover what type of Ghost we are dealing with"
 const OBJECTIVE_BONUS = [
 	"Capture a photo of Dirty Water in a sink",
@@ -69,12 +133,10 @@ function checkGhost(ghostType) {
 	
 	// Check for any ruled out evidence that matches the ghost
 	if (ghostEvidence[ghostType].intersection(evidenceRuledOut).size > 0) {
-		console.log("Ghost '{0}' mismatch from ruled out evidence.".format(ghostType))
 		return -1
 	}
 	// Check if there's any observed evidence that doesn't match the ghost
 	else if (!evidenceObserved.subSet(ghostEvidence[ghostType])) {
-		console.log("Ghost '{0}' mismatch from observed evidence.".format(ghostType))
 		return -1
 	}
 	// Check if we've observed all evidence for a ghost
@@ -88,8 +150,6 @@ function updateAllGhosts() {
 	var ghostArray = Object.keys(ghostEvidence)
 	ghostArray.forEach(function(ghostType) {
 		ghostStatus = checkGhost(ghostType)
-		console.log("#ghost_{0}".format(ghostType.toLowerCase()))
-		console.log(ghostStatus)
 		if (ghostStatus == 1) {
 			$("#ghost_{0}".format(ghostType.toLowerCase()))
 				.removeClass("btn-light btn-danger")
@@ -140,8 +200,6 @@ function updateAllEvidence() {
 }
 
 function evidenceToggle() {
-	console.log(this)
-	
 	elementId = $(this).attr('id')
 	idTokens = elementId.split('_')
 	evidenceType = idTokens[1]
@@ -190,7 +248,6 @@ function objectiveUpdate() {
 	objectivesSelected = $("select[id^=objective] option:selected").map(function() {
 		return $(this).val()
 	}).get()
-	console.log(objectivesSelected)
 
 	// Enable all options then disable what's already selected
 	$("select[id^=objective] option").prop('disabled', false)
@@ -206,7 +263,10 @@ function reset() {
 	$("#control_reset").prop('disabled', true)
 	
 	// Main Info
-	$("#main_ghostname").val("")
+	$("#main_location").val($("#main_location option:first").val())
+	$("#main_difficulty").val($("#main_difficulty option:first").val())
+	$("#main_name_first").val($("#main_name_first option:first").val())
+	$("#main_name_last").val($("#main_name_last option:first").val())
 	$("#main_responds").val($("#main_responds option:first").val())
 	$("#main_report").val($("#main_report option:first").val())
 		
@@ -225,11 +285,121 @@ function reset() {
 	// Ghost Display
 	$("[id^=ghost_]").removeClass('btn-danger btn-success').addClass('btn-light')
 	
+	// Characteristics
+	$("[id^=char_]").each(function() {$(this).val($(this).children(":first").val())})
+	
+	// Remove all error borderStyle
+	$("button, select, input").removeClass("border border-warning")
+	
 	// Reenable reset button
 	$("#control_reset").prop('disabled', false)
 }
 
+function report() {
+	// Verify form data first
+	if (!reportVerify()) {
+		return
+	}
+	
+	// Disable report button until we get a server response
+	$("#control_report").prop('disabled', true)
+	
+	var objData = {}
+	
+	// Assemble data
+	$("[id^=main_],[id^=char_]").each(function() {
+		objData[$(this).attr("id")] = $(this).val()
+	});
+	$("[id^=objective_] option:selected").each(function() {
+		objData[$(this).parent().attr("id")] = $(this).val()
+	});
+	
+	objData["ghost_type"] = $("[id^=ghost_].btn-success").text()
+	
+	console.log(objData)
+	
+	var postData = JSON.stringify(objData)
+	
+	$.ajax({
+		type: 'POST',
+		url: '/report',
+		data: postData,
+		complete: reportSuccess,
+		contentType: 'application/json',
+		dataType: 'json'
+	});
+}
+
+function reportSuccess(data, status) {
+	console.log({data:data, status:status})
+	if (status == "success") {
+		//reset()
+	}
+	
+	// Reenable report button
+	$("#control_report").prop('disabled', false)
+}
+
+function reportVerify() {
+	// Assume verified until proven otherwise
+	verified = true
+	
+	// Check if all the form data is filled out
+	$("[id^=main_],[id^=char_]").each(function() {
+		if ($(this).val() == null) {
+			$(this).addClass('border border-warning')
+			verified = false
+		}
+		else {
+			$(this).removeClass('border border-warning')
+		}
+	});
+	$("[id^=objective_] option:selected").each(function() {
+		if ($(this).val() == "") {
+			$(this).parent().addClass('border border-warning')
+			verified = false
+		}
+		else {
+			$(this).parent().removeClass('border border-warning')
+		}
+	});
+	
+	// Check if a ghost is determined
+	if ($("[id^=ghost_].btn-success").length != 1) {
+		$("[id^=evidence_]:not([id$=_display])").each(function() {
+			if ($(this).prop('disabled') == false && !$(this).hasClass('active')) {
+				$(this).addClass('border border-warning')
+			}
+			else {
+				$(this).removeClass('border border-warning')
+			}
+		});
+		verified = false
+	}
+	else {
+		$("[id^=evidence_]:not([id$=_display])").removeClass('border border-warning')
+	}
+	
+	return verified
+}
+
 $(document).ready(function() {
+	// Fill location and difficult fields
+	for (i = 0; i < LOCATIONS.length; i++) {
+		$("#main_location").append(new Option(LOCATIONS[i]))
+	}
+	for (i = 0; i < DIFFICULTIES.length; i++) {
+		$("#main_difficulty").append(new Option(DIFFICULTIES[i]))
+	}
+	
+	// Fill name fields
+	for (i = 0; i < NAMES_FIRST.length; i++) {
+		$("#main_name_first").append(new Option(NAMES_FIRST[i]))
+	}
+	for (i = 0; i < NAMES_LAST.length; i++) {
+		$("#main_name_last").append(new Option(NAMES_LAST[i]))
+	}
+	
 	// Setup objective selectors
 	$("select[id^=objective]").change(objectiveUpdate).each(function() {
 		if ($(this).attr('id') == "objective_1") {
@@ -263,6 +433,7 @@ $(document).ready(function() {
 	
 	// Setup control buttons
 	$("#control_reset").click(reset)
+	$("#control_report").click(report)
 });
 
 /* Prototype Extensions */

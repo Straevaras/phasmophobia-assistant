@@ -4,16 +4,13 @@ body {
 }
 
 #lunchbox {
-	width: 1000px;
+	width: 900px;
 }
 
 #form_main {
 	width: 610px;
 }
 
-#form_evidence {
-	width: 400px;
-}
 
 .evidence-btn {
 	width: 30px;
