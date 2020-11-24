@@ -1,3 +1,5 @@
+const GAME_VERSION = "0.176.39"
+
 const GHOST_BANSHEE = "Banshee"
 const GHOST_DEMON = "Demon"
 const GHOST_JINN = "Jinn"
@@ -48,14 +50,18 @@ const NAMES_FIRST = [
 	"James",
 	"John",
 	"Kenneth",
+	"Jennifer",
 	"Linda",
 	"Lisa",
+	"Mark",
+	"Mary",
 	"Michael",
 	"Patricia",
 	"Paul",
 	"Robert",
 	"Ruth",
 	"Sandra",
+	"Steven",
 	"Susan",
 	"Thomas",
 	"William"
@@ -369,7 +375,9 @@ function reset() {
 	$("[id^=ghost_]").removeClass('btn-danger btn-success').addClass('btn-light')
 	
 	// Characteristics
-	$("[id^=char_]").each(function() {$(this).val($(this).children(":first").val())})
+	$("[id^=char_].btn-outline-secondary").removeClass("btn-outline-secondary").addClass("btn-secondary")
+	$("[id^=char_].btn-danger").removeClass("btn-danger").addClass("btn-outline-danger")
+	$("[id^=char_].btn-success").removeClass("btn-success").addClass("btn-outline-success")
 	
 	// Remove all error borderStyle
 	$("button, select, input").removeClass("border border-warning")
@@ -431,7 +439,7 @@ function report() {
 function reportSuccess(data, status) {
 	console.log({data:data, status:status})
 	if (status == "success") {
-		//reset()
+		reset()
 	}
 	
 	// Reenable report button
@@ -482,6 +490,9 @@ function reportVerify() {
 }
 
 $(document).ready(function() {
+	// Display game version
+	$("#version").text("Game Version {0}".format(GAME_VERSION))
+	
 	// Fill location and difficult fields
 	for (i = 0; i < LOCATIONS.length; i++) {
 		$("#main_location").append(new Option(LOCATIONS[i]))
