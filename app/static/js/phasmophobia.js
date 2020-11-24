@@ -258,6 +258,89 @@ function objectiveUpdate() {
 	}
 }
 
+function createCharacteristic(name, id) {
+	var optionNAIcon = document.createElement("i")
+	$(optionNAIcon).addClass("far fa-question-circle")
+	var optionNoIcon = document.createElement("i")
+	$(optionNoIcon).addClass("fas fa-times-circle")
+	var optionYesIcon = document.createElement("i")
+	$(optionYesIcon).addClass("fas fa-check-circle")
+	
+	var optionNAButton = document.createElement("button")
+	$(optionNAButton)
+		.attr("id", "char_{0}_na".format(id))
+		.addClass("btn btn-secondary btn-sm mr-1")
+		.click(toggleCharacteristic)
+		.append(optionNAIcon)
+	var optionNoButton = document.createElement("button")
+	$(optionNoButton)
+		.attr("id", "char_{0}_no".format(id))
+		.addClass("btn btn-outline-danger btn-sm mr-1")
+		.click(toggleCharacteristic)
+		.append(optionNoIcon)
+	var optionYesButton = document.createElement("button")
+	$(optionYesButton)
+		.attr("id", "char_{0}_yes".format(id))
+		.addClass("btn btn-outline-success btn-sm mr-1")
+		.click(toggleCharacteristic)
+		.append(optionYesIcon)
+	var optionLabelButton = document.createElement("span")
+	$(optionLabelButton).addClass("btn btn-light btn-sm btn-block").text(name)
+	
+	var optionNADiv = document.createElement("div")
+	$(optionNADiv).addClass("col-1 p-0 mr-3").append(optionNAButton)
+	var optionNoDiv = document.createElement("div")
+	$(optionNoDiv).addClass("col-1 p-0 mr-3").append(optionNoButton)
+	var optionYesDiv = document.createElement("div")
+	$(optionYesDiv).addClass("col-1 p-0 mr-3").append(optionYesButton)
+	var optionLabelDiv = document.createElement("div")
+	$(optionLabelDiv).addClass("col-5 p-0 mr-2 ml-4").append(optionLabelButton)
+	
+	var parentDiv = document.createElement("div")
+	$(parentDiv).addClass("row mb-1")
+		.append(optionLabelDiv)
+		.append(optionNADiv)
+		.append(optionNoDiv)
+		.append(optionYesDiv)
+	
+	return parentDiv
+}
+
+function toggleCharacteristic() {
+	var tokens = $(this).attr("id").split("_")
+	var charVal = tokens.pop()
+	var charId = tokens.join("_")
+	
+	$("[id^={0}_]".format(charId)).each(function() {
+		switch ($(this).attr("id").split("_").pop()) {
+			case "na":
+				if (charVal == "na") {
+					$(this).removeClass("btn-outline-secondary").addClass("btn-secondary")
+				}
+				else {
+					$(this).removeClass("btn-secondary").addClass("btn-outline-secondary")
+				}
+				break;
+			case "no":
+				if (charVal == "no") {
+					$(this).removeClass("btn-outline-danger").addClass("btn-danger")
+				}
+				else {
+					$(this).removeClass("btn-danger").addClass("btn-outline-danger")
+				}
+				break;
+			case "yes":
+				if (charVal == "yes") {
+					$(this).removeClass("btn-outline-success").addClass("btn-success")
+				}
+				else {
+					$(this).removeClass("btn-success").addClass("btn-outline-success")
+				}
+				break;
+		}
+	});
+}
+
 function reset() {
 	// Disable reset button until ready
 	$("#control_reset").prop('disabled', true)
@@ -307,11 +390,26 @@ function report() {
 	var objData = {}
 	
 	// Assemble data
-	$("[id^=main_],[id^=char_]").each(function() {
+	$("[id^=main_]").each(function() {
 		objData[$(this).attr("id")] = $(this).val()
 	});
 	$("[id^=objective_] option:selected").each(function() {
 		objData[$(this).parent().attr("id")] = $(this).val()
+	});
+	$("[id^=char_]").each(function() {
+		var tokens = $(this).attr("id").split("_")
+		var charVal = tokens.pop()
+		var charId = tokens.join("_")
+		
+		if (charVal == "na" && $(this).hasClass("btn-secondary")) {
+			objData[charId] = "N/A"
+		}
+		else if (charVal == "no" && $(this).hasClass("btn-danger")) {
+			objData[charId] = "No"
+		}
+		else if (charVal == "yes" && $(this).hasClass("btn-success")) {
+			objData[charId] = "Yes"
+		}
 	});
 	
 	objData["ghost_type"] = $("[id^=ghost_].btn-success").text()
@@ -430,6 +528,29 @@ $(document).ready(function() {
 	$("#evidence_writing_observe").click(evidenceToggle)
 	$("#evidence_box_ruleout").click(evidenceToggle)
 	$("#evidence_box_observe").click(evidenceToggle)
+	
+	// Setup Characteristics
+	var characteristics = [
+		createCharacteristic("Roaming", "roaming"),
+		createCharacteristic("Sound Sensor", "sound"),
+		createCharacteristic("Lights On", "lights_on"),
+		createCharacteristic("Lights Off", "lights_off"),
+		createCharacteristic("Lights Flicker", "lights_flicker"),
+		createCharacteristic("Breaker Off", "breaker_off"),
+		createCharacteristic("Breaker On", "breaker_on"),
+		createCharacteristic("Shrill", "shrill"),
+		createCharacteristic("Mimic", "mimic"),
+		createCharacteristic("Ouija", "ouija"),
+		createCharacteristic("Items", "items"),
+		createCharacteristic("Phone", "phone"),
+		createCharacteristic("TV", "tv"),
+		createCharacteristic("Radio", "radio"),
+		createCharacteristic("Car", "car"),
+		createCharacteristic("Piano", "piano")
+	]
+	for (i = 0; i < characteristics.length; i++) {
+		$("#form_characteristics").append(characteristics[i])
+	}
 	
 	// Setup control buttons
 	$("#control_reset").click(reset)
