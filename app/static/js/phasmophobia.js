@@ -1,4 +1,5 @@
 const GAME_VERSION = "0.176.39"
+var DEBUG = false
 
 const GHOST_BANSHEE = "Banshee"
 const GHOST_DEMON = "Demon"
@@ -58,6 +59,7 @@ const NAMES_FIRST = [
 	"Michael",
 	"Patricia",
 	"Paul",
+	"Richard",
 	"Robert",
 	"Ruth",
 	"Sandra",
@@ -293,21 +295,19 @@ function createCharacteristic(name, id) {
 	var optionLabelButton = document.createElement("span")
 	$(optionLabelButton).addClass("btn btn-light btn-sm btn-block").text(name)
 	
-	var optionNADiv = document.createElement("div")
-	$(optionNADiv).addClass("col-1 p-0 mr-3").append(optionNAButton)
-	var optionNoDiv = document.createElement("div")
-	$(optionNoDiv).addClass("col-1 p-0 mr-3").append(optionNoButton)
-	var optionYesDiv = document.createElement("div")
-	$(optionYesDiv).addClass("col-1 p-0 mr-3").append(optionYesButton)
 	var optionLabelDiv = document.createElement("div")
-	$(optionLabelDiv).addClass("col-5 p-0 mr-2 ml-4").append(optionLabelButton)
+	$(optionLabelDiv).addClass("col p-0 mr-2 ml-4").append(optionLabelButton)
+	var optionButtonDiv = document.createElement("div")
+	$(optionButtonDiv)
+		.addClass("p-0 mr-3")
+		.append(optionNAButton)
+		.append(optionNoButton)
+		.append(optionYesButton)
 	
 	var parentDiv = document.createElement("div")
 	$(parentDiv).addClass("row mb-1")
 		.append(optionLabelDiv)
-		.append(optionNADiv)
-		.append(optionNoDiv)
-		.append(optionYesDiv)
+		.append(optionButtonDiv)
 	
 	return parentDiv
 }
@@ -438,7 +438,7 @@ function report() {
 
 function reportSuccess(data, status) {
 	console.log({data:data, status:status})
-	if (status == "success") {
+	if (status == "success" && DEBUG != true) {
 		reset()
 	}
 	
@@ -542,22 +542,24 @@ $(document).ready(function() {
 	
 	// Setup Characteristics
 	var characteristics = [
-		createCharacteristic("Roaming", "roaming"),
-		createCharacteristic("Sound Sensor", "sound"),
+		createCharacteristic("Door Interaction", "door_interaction"),
+		createCharacteristic("Item Movement", "item_movement"),
+		createCharacteristic("Item Interaction", "item_interaction"),
 		createCharacteristic("Lights On", "lights_on"),
 		createCharacteristic("Lights Off", "lights_off"),
 		createCharacteristic("Lights Flicker", "lights_flicker"),
 		createCharacteristic("Breaker Off", "breaker_off"),
 		createCharacteristic("Breaker On", "breaker_on"),
+		createCharacteristic("Roaming", "roaming"),
 		createCharacteristic("Shrill", "shrill"),
 		createCharacteristic("Mimic", "mimic"),
+		createCharacteristic("Appear Stationary", "appear_stationary"),
+		createCharacteristic("Appear Wiggle", "appear_wiggle"),
+		createCharacteristic("Appear Approaching", "appear_approaching"),
+		createCharacteristic("Appear Shadow", "appear_shadow"),
+		createCharacteristic("Appear Detail", "appear_detail"),
 		createCharacteristic("Ouija", "ouija"),
-		createCharacteristic("Items", "items"),
-		createCharacteristic("Phone", "phone"),
-		createCharacteristic("TV", "tv"),
-		createCharacteristic("Radio", "radio"),
-		createCharacteristic("Car", "car"),
-		createCharacteristic("Piano", "piano")
+		createCharacteristic("Sound Sensor", "sound"),
 	]
 	for (i = 0; i < characteristics.length; i++) {
 		$("#form_characteristics").append(characteristics[i])
