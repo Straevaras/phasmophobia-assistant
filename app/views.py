@@ -5,6 +5,13 @@ import json
 
 @app.route("/")
 def index():
+    if request.method == "GET":
+        if request.args.get("compact") != None:
+            return render_template("index-compact.html")
+        if request.args.get("popout") != None:
+            return render_template("index-popout.html")
+
+    # Else
     return render_template("index.html")
     
 @app.route("/favicon.ico")

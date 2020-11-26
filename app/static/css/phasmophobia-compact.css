@@ -1,0 +1,18 @@
+body {
+	background-color: black;
+	color: white;
+}
+
+#lunchbox {
+	width: 500px;
+}
+
+#form_main {
+	width: 300px;
+}
+
+
+.evidence-btn {
+	width: 30px;
+}
+

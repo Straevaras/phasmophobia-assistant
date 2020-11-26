@@ -40,6 +40,7 @@ const DIFFICULTIES = [
 const NAMES_FIRST = [
 	"Barbara",
 	"Carol",
+	"Charles",
 	"Christopher",
 	"Daniel",
 	"David",
@@ -52,11 +53,14 @@ const NAMES_FIRST = [
 	"John",
 	"Kenneth",
 	"Jennifer",
+	"Joseph",
 	"Linda",
 	"Lisa",
+	"Margaret",
 	"Mark",
 	"Mary",
 	"Michael",
+	"Nancy",
 	"Patricia",
 	"Paul",
 	"Richard",
@@ -74,10 +78,12 @@ const NAMES_LAST = [
 	"Brown",
 	"Clark",
 	"Davis",
+	"Garcia",
 	"Harris",
 	"Jackson",
 	"Johnson",
 	"Jones",
+	"Martin",
 	"Martinez",
 	"Miller",
 	"Moore",
@@ -184,27 +190,47 @@ function updateAllEvidence() {
 		possibleEvidence = ghostEvidence[$(this).text()].union(possibleEvidence)
 	});
 	
-	// Go over each evidence point and change controls accordingly
-	elementsEvidence = $("[id$=_display]")
-	elementsEvidence.each(function() {
-		// If evidence is green or red skip the check
-		if (!$(this).is(".btn-success, .btn-danger")) {		
-			evidenceTypeShorthand = $(this).attr("id").split('_')[1]
-			evidenceType = EVIDENCE_ABBR[evidenceTypeShorthand]
-			if (!possibleEvidence.has(evidenceType)) {
-				// Evidence isn't possible, disable controls
-				$("#evidence_{0}_ruleout".format(evidenceTypeShorthand)).prop('disabled', true)
-				$("#evidence_{0}_observe".format(evidenceTypeShorthand)).prop('disabled', true)
-				$("#evidence_{0}_display".format(evidenceTypeShorthand)).removeClass("btn-light").addClass("btn-secondary")
+	pget = parametersGET()
+	if ("popout" in pget) {
+		elementsEvidence = $("[id$=_single]")
+		elementsEvidence.each(function() {
+			if (!$(this).is(".btn-success, .btn-danger")) {
+				evidenceTypeShorthand = $(this).attr("id").split('_')[1]
+				evidenceType = EVIDENCE_ABBR[evidenceTypeShorthand]
+				if (!possibleEvidence.has(evidenceType)) {
+					// Evidence isn't possible, disable controls
+					$(this).prop('disabled', true).removeClass("btn-outline-light").addClass("btn-secondary")
+				}
+				else {
+					// Reenable controls in case they were disabled previously
+					$(this).prop('disabled', false).removeClass("btn-secondary").addClass("btn-outline-light")
+				}
 			}
-			else {
-				// Renable controls in case they were disabled previously
-				$("#evidence_{0}_ruleout".format(evidenceTypeShorthand)).prop('disabled', false)
-				$("#evidence_{0}_observe".format(evidenceTypeShorthand)).prop('disabled', false)
-				$("#evidence_{0}_display".format(evidenceTypeShorthand)).removeClass("btn-secondary").addClass("btn-light")
+		});
+	}
+	else {
+		// Go over each evidence point and change controls accordingly
+		elementsEvidence = $("[id$=_display]")
+		elementsEvidence.each(function() {
+			// If evidence is green or red skip the check
+			if (!$(this).is(".btn-success, .btn-danger")) {		
+				evidenceTypeShorthand = $(this).attr("id").split('_')[1]
+				evidenceType = EVIDENCE_ABBR[evidenceTypeShorthand]
+				if (!possibleEvidence.has(evidenceType)) {
+					// Evidence isn't possible, disable controls
+					$("#evidence_{0}_ruleout".format(evidenceTypeShorthand)).prop('disabled', true)
+					$("#evidence_{0}_observe".format(evidenceTypeShorthand)).prop('disabled', true)
+					$("#evidence_{0}_display".format(evidenceTypeShorthand)).removeClass("btn-light").addClass("btn-secondary")
+				}
+				else {
+					// Renable controls in case they were disabled previously
+					$("#evidence_{0}_ruleout".format(evidenceTypeShorthand)).prop('disabled', false)
+					$("#evidence_{0}_observe".format(evidenceTypeShorthand)).prop('disabled', false)
+					$("#evidence_{0}_display".format(evidenceTypeShorthand)).removeClass("btn-secondary").addClass("btn-light")
+				}
 			}
-		}
-	});
+		});
+	}
 }
 
 function evidenceToggle() {
@@ -247,6 +273,22 @@ function evidenceToggle() {
 				.removeClass("btn-success")
 				.addClass("btn-light")
 			evidenceObserved.delete(EVIDENCE_ABBR[evidenceType])
+		}
+	}
+	else if (evidenceStatus == 'single') {
+		// Get buttons current status
+		if ($(this).hasClass('btn-outline-light')) {
+			$(this).removeClass('btn-outline-light').addClass('btn-success')
+			evidenceObserved.add(EVIDENCE_ABBR[evidenceType])
+		}
+		else if ($(this).hasClass('btn-success')) {
+			$(this).removeClass('btn-success').addClass('btn-danger')
+			evidenceObserved.delete(EVIDENCE_ABBR[evidenceType])
+			evidenceRuledOut.add(EVIDENCE_ABBR[evidenceType])
+		}
+		else if ($(this).hasClass('btn-danger')) {
+			$(this).removeClass('btn-danger').addClass('btn-outline-light')
+			evidenceRuledOut.delete(EVIDENCE_ABBR[evidenceType])
 		}
 	}
 	updateAllGhosts()
@@ -386,6 +428,25 @@ function reset() {
 	$("#control_reset").prop('disabled', false)
 }
 
+function resetPopout() {
+	// Disable reset button until ready
+	$("#control_reset").prop('disabled', true)
+	
+	// Evidence controls
+	evidenceObserved.clear()
+	evidenceRuledOut.clear()
+	$("[id$=_single]")
+		.prop('disabled', false)
+		.removeClass('btn-danger btn-success btn-secondary')
+		.addClass('btn-outline-light')
+		
+	// Ghost Display
+	$("[id^=ghost_]").removeClass('btn-danger btn-success').addClass('btn-light')
+	
+	// Reenable reset button
+	$("#control_reset").prop('disabled', false)
+}
+
 function report() {
 	// Verify form data first
 	if (!reportVerify()) {
@@ -489,7 +550,21 @@ function reportVerify() {
 	return verified
 }
 
-$(document).ready(function() {
+function parametersGET() {
+	paramsGET = window.location.search.substr(1).split("&")
+	console.log(paramsGET)
+	jsonGET = {}
+	
+	for (var i = 0; i < paramsGET.length; i++) {
+		console.log(paramsGET[i])
+		tokens = paramsGET[i].split("=")
+		jsonGET[tokens[0]] = tokens[1]
+	}
+	
+	return jsonGET
+}
+
+function readyMain() {
 	// Display game version
 	$("#version").text("Game Version {0}".format(GAME_VERSION))
 	
@@ -565,9 +640,49 @@ $(document).ready(function() {
 		$("#form_characteristics").append(characteristics[i])
 	}
 	
+	// Setup link buttons
+	$("#link_popout").click(function() {
+		window.open('?popout','MyWindow','resizable=no,toolbar=no,scrollbars=no,menubar=no,status=no,directories=no,width=190,height=375');
+		return false;
+	});
+
 	// Setup control buttons
 	$("#control_reset").click(reset)
 	$("#control_report").click(report)
+}
+
+function readyCompact() {
+}
+
+function readyPopout() {
+	// Setup evidence buttons
+	$("#evidence_emf_single").click(evidenceToggle)
+	$("#evidence_fingerprints_single").click(evidenceToggle)
+	$("#evidence_freezing_single").click(evidenceToggle)
+	$("#evidence_orb_single").click(evidenceToggle)
+	$("#evidence_writing_single").click(evidenceToggle)
+	$("#evidence_box_single").click(evidenceToggle)
+	
+	// Setup control buttons
+	$("#control_reset").click(resetPopout)
+}
+
+$(document).ready(function() {
+	pget = parametersGET()
+	console.log(pget)
+	
+	if ("compact" in pget) {
+		console.log("Running compact")
+		readyCompact()
+	}
+	else if ("popout" in pget) {
+		console.log("Running popout")
+		readyPopout()	
+	}
+	else {
+		console.log("Running main")
+		readyMain()
+	}
 });
 
 /* Prototype Extensions */

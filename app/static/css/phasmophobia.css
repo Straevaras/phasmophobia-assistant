@@ -1,10 +1,15 @@
 body {
-	background-color: black;
+	background-color: #002200;
 	color: white;
+	font-family: Calibri;
 }
 
-#lunchbox {
+#lunchbox, #header {
 	width: 1000px;
+}
+
+#popout {
+	width: auto;
 }
 
 #form_main {
@@ -13,6 +18,12 @@ body {
 
 
 .evidence-btn {
-	width: 30px;
+	width: 34px;
+	text-align: center;
+}
+
+.popout-ghost-btn {
+	width: 100px;
+	font-variant: small-caps;
 }
 

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Phasmophobia Assistant - Popout</title>
+	
+		<!-- Open source libraries //-->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+		
+		<!-- Project specific includes //-->
+		<script type="text/javascript" src="{{ url_for('static', filename='js/phasmophobia.js') }}"></script>
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/phasmophobia.css') }}" />
+		
+		<!-- Favicons //-->
+		<link rrel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}" />
+		<link rel="apple-touch-icon" href="{{ url_for('static', filename='img/apple-touch-icon.png') }}" />
+		<link rel="apple-touch-icon-precomposed" href="{{ url_for('static', filename='img/apple-touch-icon.png') }}" />
+	</head>
+	<body>
+		<div id="popout" class="row mt-2">
+			<div class="form-group ml-2 px-3 my-auto">
+				<div class="row ml-1 mb-1">
+					<button id="evidence_emf_single" class="evidence-btn btn btn-outline-light btn-sm"><i class="fas fa-wifi"></i></button>
+				</div>
+				<div class="row ml-1 mb-1">
+					<button id="evidence_fingerprints_single" class="evidence-btn btn btn-outline-light btn-sm"><i class="fas fa-fingerprint"></i></sbuttonpan>
+				</div>
+				<div class="row ml-1 mb-1">
+					<button id="evidence_freezing_single" class="evidence-btn btn btn-outline-light btn-sm "><i class="fas fa-snowflake"></i></button>
+				</div>
+				<div class="row ml-1 mb-1">
+					<button id="evidence_orb_single" class="evidence-btn btn btn-outline-light btn-sm "><i class="fas fa-spinner"></i></button>
+				</div>
+				<div class="row ml-1 mb-1">
+					<button id="evidence_writing_single" class="evidence-btn btn btn-outline-light btn-sm"><i class="fas fa-pen"></i></button>
+				</div>
+				<div class="row ml-1 mb-1">
+					<button id="evidence_box_single" class="evidence-btn btn btn-outline-light btn-sm"><i class="fas fa-microphone"></i></button>
+				</div>
+				<div class="row mt-5 ml-1 mb-1">
+					<button id="control_reset" class="btn btn-outline-warning btn-sm evidence-btn mr-1"><i class="fas fa-sync-alt"></i></button>
+				</div>
+			</div>
+			<div class="col ml-3">
+				<div class="row"><span id="ghost_banshee" class="btn btn-sm btn-light popout-ghost-btn p-0 mt-1">Banshee</span></div>
+				<div class="row"><span id="ghost_demon" class="btn btn-sm btn-light popout-ghost-btn p-0 mt-1">Demon</span></div>
+				<div class="row"><span id="ghost_jinn" class="btn btn-sm btn-light popout-ghost-btn p-0 mt-1">Jinn</span></div>
+				<div class="row"><span id="ghost_mare" class="btn btn-sm btn-light popout-ghost-btn p-0 mt-1">Mare</span></div>
+				<div class="row"><span id="ghost_oni" class="btn btn-sm btn-light popout-ghost-btn p-0 mt-1">Oni</span></div>
+				<div class="row"><span id="ghost_phantom" class="btn btn-sm btn-light popout-ghost-btn p-0 mt-1">Phantom</span></div>
+				<div class="row"><span id="ghost_poltergeist" class="btn btn-sm btn-light popout-ghost-btn p-0 mt-1">Poltergeist</span></div>
+				<div class="row"><span id="ghost_revenant" class="btn btn-sm btn-light popout-ghost-btn p-0 mt-1">Revenant</span></div>
+				<div class="row"><span id="ghost_shade" class="btn btn-sm btn-light popout-ghost-btn p-0 mt-1">Shade</span></div>
+				<div class="row"><span id="ghost_spirit" class="btn btn-sm btn-light popout-ghost-btn p-0 mt-1">Spirit</span></div>
+				<div class="row"><span id="ghost_wraith" class="btn btn-sm btn-light popout-ghost-btn p-0 mt-1">Wraith</span></div>
+				<div class="row"><span id="ghost_yurei" class="btn btn-sm btn-light popout-ghost-btn p-0 mt-1">Yurei</span></div>
+			</div>
+		</div>
+	</body>
+</html>
