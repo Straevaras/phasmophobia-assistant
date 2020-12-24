@@ -4,6 +4,8 @@ from flask import render_template, request
 import json
 
 @app.route("/")
+@app.route("/index.htm")
+@app.route("/index.html")
 def index():
     if request.method == "GET":
         if request.args.get("compact") != None:
@@ -40,4 +42,4 @@ def dbtest():
     pdb = Database('phasmophobia-reports.db')
     pdb.close()
     
-    return "Success"
+    return "Success\n"
