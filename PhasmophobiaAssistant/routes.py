@@ -1,5 +1,5 @@
-from app import app
-from app.Database import Database
+from PhasmophobiaAssistant import app
+from PhasmophobiaAssistant.Database import Database
 from flask import render_template, request
 import json
 
