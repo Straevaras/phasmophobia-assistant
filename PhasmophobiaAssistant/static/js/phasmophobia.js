@@ -1,4 +1,4 @@
-const GAME_VERSION = "0.176.39"
+const GAME_VERSION = "0.3.0.4"
 var DEBUG = false
 
 const GHOST_BANSHEE = "Banshee"
@@ -13,13 +13,18 @@ const GHOST_SHADE = "Shade"
 const GHOST_SPIRIT = "Spirit"
 const GHOST_WRAITH = "Wraith"
 const GHOST_YUREI = "Yurei"
+const GHOST_HANTU = "Hantu"
+const GHOST_YOKAI = "Yokai"
+const GHOST_GORYO = "Goryo"
+const GHOST_MYLING = "Myling"
 
 const EVIDENCE_EMF = "EMF Level 5"
+const EVIDENCE_BOX = "Spirit Box"
 const EVIDENCE_FINGERPRINTS = "Fingerprints"
-const EVIDENCE_FREEZING = "Freezing Temperatures"
 const EVIDENCE_ORB = "Ghost Orb"
 const EVIDENCE_WRITING = "Ghost Writing"
-const EVIDENCE_BOX = "Spirit Box"
+const EVIDENCE_FREEZING = "Freezing Temperatures"
+const EVIDENCE_DOTS = "D.O.T.S. Projector"
 
 const LOCATIONS = [
 	"Tanglewood Streethouse",
@@ -28,7 +33,9 @@ const LOCATIONS = [
 	"Grafton Farmhouse",
 	"Bleadsdale Farmhouse",
 	"Brownstone High School",
-	"Asylum"
+	"Asylum",
+	"Prison",
+	"Willow Street House"
 ]
 
 const DIFFICULTIES = [
@@ -98,15 +105,17 @@ const NAMES_LAST = [
 
 const OBJECTIVE_MAIN = "Discover what type of Ghost we are dealing with"
 const OBJECTIVE_BONUS = [
-	"Capture a photo of Dirty Water in a sink",
-	"Capture a photo of the Ghost",
-	"Cleanse the area near the Ghost using Smudge Sticks",
-	"Detect a room below 10 Celsius/50 Fahrenheit with a Thermometer",
-	"Detect a Ghosts presence with a Motion Sensor",
-	"Find evidence of the paranormal with an EMF Reader",
-	"Get a Ghost to walk through Salt",
 	"Have a member of your team witness a Ghost Event",
-	"Prevent the Ghost from hunting with a Crucifix"
+	"Capture a photo of the Ghost",
+	"Find evidence of the paranormal with an EMF Reader",
+	"Detect a Ghosts presence with a Motion Sensor",
+	"Cleanse the area near the Ghost using Smudge Sticks",
+	"Prevent the Ghost from hunting with a Crucifix",
+	"Get a Ghost to walk through Salt",
+	"Get a Ghost to blow out a Candle",
+	"Escape the Ghost during a Hunt with no deaths",
+	"Use Smudge Sticks while the Ghost is hunting a player",
+	"Get an average Sanity below 25%"
 ]
 
 const REPORTS = [
@@ -122,22 +131,27 @@ const EVIDENCE_ABBR = {
 	"freezing": EVIDENCE_FREEZING,
 	"orb": EVIDENCE_ORB,
 	"writing": EVIDENCE_WRITING,
-	"box": EVIDENCE_BOX
+	"box": EVIDENCE_BOX,
+	"dots": EVIDENCE_DOTS
 }
 
 var ghostEvidence = {}
-ghostEvidence[GHOST_BANSHEE] 	 = new Set([EVIDENCE_EMF,			EVIDENCE_FINGERPRINTS,	EVIDENCE_FREEZING	])
-ghostEvidence[GHOST_DEMON]	 	 = new Set([EVIDENCE_FREEZING,		EVIDENCE_WRITING,		EVIDENCE_BOX		])
-ghostEvidence[GHOST_JINN]		 = new Set([EVIDENCE_EMF,			EVIDENCE_ORB,			EVIDENCE_BOX		])
-ghostEvidence[GHOST_MARE]		 = new Set([EVIDENCE_FREEZING,		EVIDENCE_ORB,			EVIDENCE_BOX		])
-ghostEvidence[GHOST_ONI]		 = new Set([EVIDENCE_EMF, 			EVIDENCE_WRITING,		EVIDENCE_BOX		])
-ghostEvidence[GHOST_PHANTOM]	 = new Set([EVIDENCE_EMF,			EVIDENCE_FREEZING,		EVIDENCE_ORB		])
-ghostEvidence[GHOST_POLTERGEIST] = new Set([EVIDENCE_FINGERPRINTS,	EVIDENCE_ORB,			EVIDENCE_BOX		])
-ghostEvidence[GHOST_REVENANT]	 = new Set([EVIDENCE_EMF,			EVIDENCE_FINGERPRINTS,	EVIDENCE_WRITING	])
-ghostEvidence[GHOST_SHADE]		 = new Set([EVIDENCE_EMF,			EVIDENCE_ORB,			EVIDENCE_WRITING	])
-ghostEvidence[GHOST_SPIRIT]		 = new Set([EVIDENCE_FINGERPRINTS,	EVIDENCE_WRITING,		EVIDENCE_BOX		])
-ghostEvidence[GHOST_WRAITH]		 = new Set([EVIDENCE_FINGERPRINTS,	EVIDENCE_FREEZING,		EVIDENCE_BOX		])
-ghostEvidence[GHOST_YUREI]		 = new Set([EVIDENCE_FREEZING,		EVIDENCE_ORB,			EVIDENCE_WRITING	])
+ghostEvidence[GHOST_BANSHEE] 	 = new Set([EVIDENCE_FINGERPRINTS,	EVIDENCE_ORB,			EVIDENCE_DOTS		])
+ghostEvidence[GHOST_DEMON]	 	 = new Set([EVIDENCE_FINGERPRINTS,	EVIDENCE_WRITING,		EVIDENCE_FREEZING	])
+ghostEvidence[GHOST_JINN]		 = new Set([EVIDENCE_EMF,			EVIDENCE_FINGERPRINTS,	EVIDENCE_FREEZING	])
+ghostEvidence[GHOST_MARE]		 = new Set([EVIDENCE_BOX,			EVIDENCE_ORB,			EVIDENCE_WRITING	])
+ghostEvidence[GHOST_ONI]		 = new Set([EVIDENCE_EMF, 			EVIDENCE_FREEZING,		EVIDENCE_DOTS		])
+ghostEvidence[GHOST_PHANTOM]	 = new Set([EVIDENCE_BOX,			EVIDENCE_FINGERPRINTS,	EVIDENCE_DOTS		])
+ghostEvidence[GHOST_POLTERGEIST] = new Set([EVIDENCE_BOX,			EVIDENCE_FINGERPRINTS,	EVIDENCE_WRITING	])
+ghostEvidence[GHOST_REVENANT]	 = new Set([EVIDENCE_ORB,			EVIDENCE_WRITING,		EVIDENCE_FREEZING	])
+ghostEvidence[GHOST_SHADE]		 = new Set([EVIDENCE_EMF,			EVIDENCE_WRITING,		EVIDENCE_FREEZING	])
+ghostEvidence[GHOST_SPIRIT]		 = new Set([EVIDENCE_EMF,			EVIDENCE_BOX,			EVIDENCE_WRITING	])
+ghostEvidence[GHOST_WRAITH]		 = new Set([EVIDENCE_EMF,			EVIDENCE_BOX,			EVIDENCE_DOTS		])
+ghostEvidence[GHOST_YUREI]		 = new Set([EVIDENCE_ORB,			EVIDENCE_FREEZING,		EVIDENCE_DOTS		])
+ghostEvidence[GHOST_HANTU]		 = new Set([EVIDENCE_FINGERPRINTS,	EVIDENCE_ORB,			EVIDENCE_FREEZING	])
+ghostEvidence[GHOST_YOKAI]		 = new Set([EVIDENCE_BOX,			EVIDENCE_ORB,			EVIDENCE_DOTS		])
+ghostEvidence[GHOST_GORYO]		 = new Set([EVIDENCE_EMF,			EVIDENCE_FINGERPRINTS,	EVIDENCE_DOTS		])
+ghostEvidence[GHOST_MYLING]		 = new Set([EVIDENCE_EMF,			EVIDENCE_FINGERPRINTS,	EVIDENCE_WRITING	])
 
 var evidenceObserved = new Set()
 var evidenceRuledOut = new Set()
@@ -614,6 +628,8 @@ function readyMain() {
 	$("#evidence_writing_observe").click(evidenceToggle)
 	$("#evidence_box_ruleout").click(evidenceToggle)
 	$("#evidence_box_observe").click(evidenceToggle)
+	$("#evidence_dots_ruleout").click(evidenceToggle)
+	$("#evidence_dots_observe").click(evidenceToggle)
 	
 	// Setup Characteristics
 	var characteristics = [
@@ -642,7 +658,7 @@ function readyMain() {
 	
 	// Setup link buttons
 	$("#link_popout").click(function() {
-		window.open('?popout','MyWindow','resizable=no,toolbar=no,scrollbars=no,menubar=no,status=no,directories=no,width=190,height=375');
+		window.open('?popout','MyWindow','resizable=no,toolbar=no,scrollbars=no,menubar=no,status=no,directories=no,width=190,height=450');
 		return false;
 	});
 
@@ -662,6 +678,7 @@ function readyPopout() {
 	$("#evidence_orb_single").click(evidenceToggle)
 	$("#evidence_writing_single").click(evidenceToggle)
 	$("#evidence_box_single").click(evidenceToggle)
+	$("#evidence_dots_single").click(evidenceToggle)
 	
 	// Setup control buttons
 	$("#control_reset").click(resetPopout)
